@@ -36,6 +36,11 @@ const PhotoList = () => {
     return photos.filter((p) => p.tags.some((tag) => selectedTags.includes(tag)));
   }, [photos, selectedTags]);
 
+  const loadPhotos = async () => {
+    const allPhotos = await getAllPhotos();
+    setPhotos(allPhotos.sort((a, b) => b.createDate - a.createDate));
+  };
+
   const {
     searchQuery,
     setSearchQuery,
@@ -130,7 +135,7 @@ const PhotoList = () => {
         open={addOpen}
         onClose={() => setAddOpen(false)}
         onPhotoAdded={(photo) => {
-          console.log('New photo added', photo);
+          loadPhotos();
         }}
       />
     </div>

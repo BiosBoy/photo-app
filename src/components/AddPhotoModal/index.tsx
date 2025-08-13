@@ -112,7 +112,7 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
         <Stack spacing={2} mt={1}>
           <Button variant="outlined" component="label">
             Select Image
-            <input type="file" accept="image/*" hidden onChange={handleFileChange} />
+            <input type="file" accept=".jpg,.jpeg,.png" hidden onChange={handleFileChange} />
           </Button>
 
           {preview && (

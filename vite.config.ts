@@ -6,6 +6,13 @@ export default defineConfig({
   server: {
     open: false,
     port: 3000,
+    proxy: {
+      '/upload': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   test: {
     globals: true,
