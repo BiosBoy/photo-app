@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, Typography, Box, Chip, Stack, Button } from '@mui/material';
 
+import { Link, useSearchParams } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
 import FilterDropdown from '../../components/FilterDropdown';
 import AddPhotoModal from '../../components/AddPhotoModal';
+import PhotoThumbnail from '../../components/PhotoCard';
 
 import useSearchPagination from '../../hooks/useSearchPagination';
 import { getAllPhotos } from '../../utils/photoDb';
 import { Photo } from '../../interfaces/photos';
-import PhotoThumbnail from '../../components/PhotoCard';
 
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
