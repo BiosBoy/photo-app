@@ -14,10 +14,9 @@ import {
   Divider,
 } from '@mui/material';
 
-import styles from './index.module.scss';
-
 import { getAllPhotos } from '../../utils/photoDb';
 import { Photo } from '../../interfaces/photos';
+import styles from './index.module.scss';
 
 type User = {
   firstName: string;

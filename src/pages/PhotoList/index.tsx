@@ -18,7 +18,9 @@ const PhotoList = () => {
   const [addOpen, setAddOpen] = useState(false);
 
   useEffect(() => {
-    getAllPhotos().then(setPhotos);
+    getAllPhotos().then((photos) =>
+      setPhotos([...photos].sort((a, b) => b.createDate - a.createDate))
+    );
   }, []);
 
   const allTags = useMemo(
@@ -39,7 +41,7 @@ const PhotoList = () => {
 
   const loadPhotos = async () => {
     const allPhotos = await getAllPhotos();
-    setPhotos(allPhotos.sort((a, b) => b.createDate - a.createDate));
+    setPhotos([...allPhotos].sort((a, b) => b.createDate - a.createDate));
   };
 
   const {
@@ -68,10 +70,6 @@ const PhotoList = () => {
     setSearchParams(params);
   }, [searchQuery, currentPage, selectedTags, setSearchParams]);
 
-  const normalizedPhotos = useMemo(() => {
-    return paginatedPhotos.slice().sort((a, b) => b.createDate - a.createDate);
-  }, [paginatedPhotos]);
-
   return (
     <div className="listWrap">
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -95,7 +93,7 @@ const PhotoList = () => {
       {!paginatedPhotos?.length ? (
         <Typography>No notes added yet.</Typography>
       ) : (
-        normalizedPhotos.map((photo) => (
+        paginatedPhotos.map((photo) => (
           <Card key={photo.id} sx={{ my: 2 }}>
             <Link to={`/${photo.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <CardContent>

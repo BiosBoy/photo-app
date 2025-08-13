@@ -20,8 +20,14 @@ if (!fs.existsSync(collectionDir)) {
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, collectionDir),
-  filename: (_, file, cb) => cb(null, file.originalname),
+  filename: (_, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const base = path.basename(file.originalname, ext);
+    const timestamp = Date.now();
+    cb(null, `${base}-${timestamp}${ext}`);
+  },
 });
+
 const upload = multer({ storage });
 
 server
@@ -34,10 +40,15 @@ server
     res.setHeader('Access-Control-Allow-Headers', `${HEADERS_FIRST}, ${HEADERS_SECOND}`);
     res.setHeader('Cache-Control', 'public, max-age=86400');
     next();
-  });
+  })
+  .use('/collection', express.static(path.join(process.cwd(), './public/collection')));
 
 server.post('/upload', upload.single('photo'), (req, res) => {
-  const ext = path.extname(req.file.originalname).replace('.', '');
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+
+  const ext = path.extname(req.file.filename).replace('.', '');
   res.json({
     savedFileName: req.file.filename,
     fileType: ext,

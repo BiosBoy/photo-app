@@ -26,8 +26,8 @@ import {
 } from '../../utils/notesDb';
 import { Photo } from '../../interfaces/photos';
 
-import styles from './index.module.scss';
 import PhotoThumbnail from '../../components/PhotoCard';
+import styles from './index.module.scss';
 
 const PhotoDetail = () => {
   const { id } = useParams();

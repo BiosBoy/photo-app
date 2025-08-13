@@ -18,7 +18,7 @@ import type { Photo } from '../../interfaces/photos';
 type AddPhotoModalProps = {
   open: boolean;
   onClose: () => void;
-  onPhotoAdded?: (photo: Photo) => void;
+  onPhotoAdded: (photo: Photo) => void;
 };
 
 const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
@@ -41,6 +41,10 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
   };
 
   const handleAddTag = () => {
+    if (!tagInput) {
+      alert('Please add tag name first.');
+      return;
+    }
     const trimmed = tagInput.trim();
     if (trimmed && !tags.includes(trimmed)) {
       setTags((prev) => [...prev, trimmed]);
@@ -85,10 +89,6 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
 
       await addPhoto(newPhoto);
 
-      if (onPhotoAdded) {
-        onPhotoAdded(newPhoto);
-      }
-
       setFile(null);
       setPreview(null);
       setTitle('');
@@ -96,6 +96,7 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
       setTags([]);
       setTagInput('');
 
+      onPhotoAdded(newPhoto);
       onClose();
     } catch (err) {
       console.error(err);

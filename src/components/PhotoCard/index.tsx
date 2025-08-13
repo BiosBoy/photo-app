@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styles from './index.module.scss';
 import { Photo } from '../../interfaces/photos';
+import styles from './index.module.scss';
 
 const PhotoCard = ({ photo, isThumb }: { isThumb?: boolean; photo: Photo }) => {
   const [loading, setLoading] = useState(true);

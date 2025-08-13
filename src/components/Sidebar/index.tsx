@@ -2,9 +2,9 @@ import { Drawer, List, ListItem, ListItemText, ListItemButton, Toolbar } from '@
 import { Link, useLocation } from 'react-router-dom';
 import ROUTES from '../../constants/routes';
 
-import styles from './index.module.scss';
 import { resetNotesDb } from '../../utils/notesDb';
 import { resetPhotoDb } from '../../utils/photoDb';
+import styles from './index.module.scss';
 
 const Sidebar = () => {
   const location = useLocation();
