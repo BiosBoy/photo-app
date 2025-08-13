@@ -1,10 +1,10 @@
-export type Photo = {
+export interface Photo {
   id: string;
   createDate: number; // unix ms timestamp
   title: string;
   caption: string;
   tags: string[];
-};
+}
 
 const now = Date.now();
 const days = (n: number) => n * 24 * 60 * 60 * 1000;

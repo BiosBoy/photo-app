@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 
 import PhotoList from '../pages/PhotoList';
 import PhotoDetail from '../pages/PhotoList/PhotoDetail';
+import Profile from '../pages/Profile';
 import NotFound from '../pages/404';
 
 import styles from './index.module.scss';
@@ -20,8 +21,9 @@ const App = () => (
         <Toolbar />
         <Container>
           <Routes>
-            <Route path="/" element={<PhotoList />}  />
-            <Route path="/:id" element={<PhotoDetail />}  />
+            <Route path="/" element={<PhotoList />} />
+            <Route path="/:id" element={<PhotoDetail />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>

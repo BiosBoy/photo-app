@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -28,7 +28,9 @@ const Header = () => {
           {pageName} Page
         </Typography>
         <IconButton color="inherit" edge="end">
-          <AccountCircleIcon />
+          <Link to="/profile">
+            <AccountCircleIcon />
+          </Link>
         </IconButton>
       </Toolbar>
     </AppBar>

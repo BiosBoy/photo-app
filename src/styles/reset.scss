@@ -46,3 +46,15 @@ ul,
 ol {
   list-style: none;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+body {
+  overflow: -moz-scrollbars-none;
+}
