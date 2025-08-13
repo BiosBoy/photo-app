@@ -63,7 +63,7 @@ photo-app/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/BiosBoy/ats-react-tsx-app.git
+git clone https://github.com/BiosBoy/photo-app.git
 cd photo-app
 ```
 
