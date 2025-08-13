@@ -8,8 +8,8 @@
   },
   "type": "module",
   "scripts": {
-    "start:frontend": "vite",
-    "start:backend": "node ./server/index.js",
+    "start:dev": "vite",
+    "start:server": "node ./server/index.js",
     "build": "vite build",
     "dev": "vite",
     "lint": "eslint \"**/*.{ts,js,tsx,jsx}\" --fix",

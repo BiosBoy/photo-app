@@ -76,8 +76,8 @@ yarn install
 ### 3. Start the frontend and backend servers
 
 ```bash
-yarn start:frontend
-yarn start:backend
+yarn start:dev
+yarn start:server
 ```
 
 Open your browser at: [http://localhost:3000](http://localhost:3000)
@@ -90,6 +90,12 @@ Open your browser at: [http://localhost:3000](http://localhost:3000)
 
 ```bash
 yarn build
+```
+
+### 1. Run prod (make sure to run build first)
+
+```bash
+yarn start:server
 ```
 
 ### 2. Preview locally
