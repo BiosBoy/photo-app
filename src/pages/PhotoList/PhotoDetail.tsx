@@ -27,6 +27,7 @@ import {
 import { Photo } from '../../interfaces/photos';
 
 import styles from './index.module.scss';
+import PhotoThumbnail from '../../components/PhotoCard';
 
 const PhotoDetail = () => {
   const { id } = useParams();
@@ -95,12 +96,7 @@ const PhotoDetail = () => {
       </Box>
 
       <Card sx={{ my: 2 }}>
-        <Box
-          component="img"
-          src={`collection/${photo.fileName}.${photo.fileType}`}
-          alt={photo.title}
-          sx={{ width: '100%', height: 'auto', maxHeight: 600, objectFit: 'cover' }}
-        />
+        <PhotoThumbnail photo={photo} />
         <CardContent>
           <Typography variant="body1" sx={{ mb: 1.5 }}>
             {photo.caption}

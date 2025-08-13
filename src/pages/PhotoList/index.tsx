@@ -10,6 +10,7 @@ import AddPhotoModal from '../../components/AddPhotoModal';
 import useSearchPagination from '../../hooks/useSearchPagination';
 import { getAllPhotos } from '../../utils/photoDb';
 import { Photo } from '../../interfaces/photos';
+import PhotoThumbnail from '../../components/PhotoCard';
 
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -99,12 +100,7 @@ const PhotoList = () => {
             <Link to={`/${photo.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <CardContent>
                 <Stack direction="row" spacing={2}>
-                  <Box
-                    component="img"
-                    src={`collection/${photo.fileName}.${photo.fileType}`}
-                    alt={photo.title}
-                    sx={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 1 }}
-                  />
+                  <PhotoThumbnail photo={photo} isThumb />
                   <Box>
                     <Typography variant="h6">{photo.title}</Typography>
                     <Typography variant="body2" sx={{ mb: 1 }}>
@@ -134,7 +130,7 @@ const PhotoList = () => {
       <AddPhotoModal
         open={addOpen}
         onClose={() => setAddOpen(false)}
-        onPhotoAdded={(photo) => {
+        onPhotoAdded={() => {
           loadPhotos();
         }}
       />
