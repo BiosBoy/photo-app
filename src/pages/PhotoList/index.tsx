@@ -7,14 +7,20 @@ import Pagination from '../../components/Pagination';
 import FilterDropdown from '../../components/FilterDropdown';
 import NothingFound from '../../components/NothingFound';
 
-import photos from '../../data/photos';
+import { getPhotoData } from '../../utils/getPhotoData';
+import type { Photo } from '../../data/photos';
 
 import useSearchPagination from '../../hooks/useSearchPagination';
 
-const allTags = Array.from(new Set(photos.flatMap((p) => p.tags))).sort();
-
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const photos: Photo[] = useMemo(() => getPhotoData(), []);
+
+  const allTags = useMemo(
+    () => Array.from(new Set(photos.flatMap((p) => p.tags))).sort(),
+    [photos]
+  );
 
   const [selectedTags, setSelectedTags] = useState<string[]>(
     searchParams.get('tags')?.split(',') ?? []
@@ -26,7 +32,7 @@ const PhotoList = () => {
     }
 
     return photos.filter((p) => p.tags.some((t) => selectedTags.includes(t)));
-  }, [selectedTags]);
+  }, [photos, selectedTags]);
 
   const {
     searchQuery,
@@ -42,7 +48,6 @@ const PhotoList = () => {
 
   useEffect(() => {
     const params: Record<string, string> = {};
-
     if (searchQuery) {
       params.search = searchQuery;
     }
