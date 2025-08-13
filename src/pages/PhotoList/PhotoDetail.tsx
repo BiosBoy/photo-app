@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Typography,
   Card,
@@ -16,14 +16,22 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 
-import { getPhotoById } from '../../utils/photoDb';
-import { addNote, getNotesByPhotoId, deleteNote, Note } from '../../utils/notesDb';
+import { getPhotoById, deletePhoto } from '../../utils/photoDb';
+import {
+  addNote,
+  getNotesByPhotoId,
+  deleteNote,
+  deleteNotesByPhotoId,
+  Note,
+} from '../../utils/notesDb';
 import { Photo } from '../../interfaces/photos';
 
 import styles from './index.module.scss';
 
 const PhotoDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [photo, setPhoto] = useState<Photo | undefined>(undefined);
   const [notes, setNotes] = useState<Note[]>([]);
   const [noteText, setNoteText] = useState('');
@@ -52,6 +60,20 @@ const PhotoDetail = () => {
     setNotes((prev) => prev.filter((n) => n.id !== noteId));
   };
 
+  const handleDeletePhoto = async () => {
+    if (!id) return;
+    if (!window.confirm('Are you sure you want to delete this photo and all related notes?')) {
+      return;
+    }
+
+    // Delete related notes first
+    await deleteNotesByPhotoId(id);
+    // Delete photo from DB
+    await deletePhoto(id);
+    // Navigate back to photo list
+    navigate('/');
+  };
+
   if (!photo) {
     return <Typography>Photo not found</Typography>;
   }
@@ -62,9 +84,14 @@ const PhotoDetail = () => {
         <Typography variant="h4" gutterBottom>
           {photo.title}
         </Typography>
-        <Button component={Link} to="/" variant="outlined" size="small">
-          Back to Photos
-        </Button>
+        <Stack direction="row" spacing={1}>
+          <Button component={Link} to="/" variant="outlined" size="small">
+            Back to Photos
+          </Button>
+          <Button variant="outlined" color="error" size="small" onClick={handleDeletePhoto}>
+            Delete Photo
+          </Button>
+        </Stack>
       </Box>
 
       <Card sx={{ my: 2 }}>

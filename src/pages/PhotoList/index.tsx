@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Card, CardContent, Typography, Box, Chip, Stack } from '@mui/material';
+import { Card, CardContent, Typography, Box, Chip, Stack, Button } from '@mui/material';
 
 import SearchBar from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
 import FilterDropdown from '../../components/FilterDropdown';
+import AddPhotoModal from '../../components/AddPhotoModal';
 
 import useSearchPagination from '../../hooks/useSearchPagination';
 import { getAllPhotos } from '../../utils/photoDb';
@@ -13,6 +14,7 @@ import { Photo } from '../../interfaces/photos';
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [addOpen, setAddOpen] = useState(false);
 
   useEffect(() => {
     getAllPhotos().then(setPhotos);
@@ -66,10 +68,14 @@ const PhotoList = () => {
 
   return (
     <div className="listWrap">
-      <Typography variant="h4" gutterBottom>
-        Photos
-      </Typography>
-
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h4" gutterBottom sx={{ mb: 0 }}>
+          Photos
+        </Typography>
+        <Button variant="contained" onClick={() => setAddOpen(true)}>
+          Add Photo
+        </Button>
+      </Box>
       <Box display="flex" gap={2} mb={3}>
         <SearchBar value={searchQuery} onChange={setSearchQuery} placeholder="Search by title..." />
         <FilterDropdown
@@ -80,7 +86,6 @@ const PhotoList = () => {
           getCountForOption={(tag) => photos.filter((p) => p.tags.includes(tag)).length}
         />
       </Box>
-
       {!paginatedPhotos?.length ? (
         <Typography>No notes added yet.</Typography>
       ) : (
@@ -120,6 +125,13 @@ const PhotoList = () => {
         totalPages={totalPages}
         currentPage={currentPage}
         onChange={(_, page) => setCurrentPage(page)}
+      />
+      <AddPhotoModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onPhotoAdded={(photo) => {
+          console.log('New photo added', photo);
+        }}
       />
     </div>
   );

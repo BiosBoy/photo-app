@@ -49,3 +49,12 @@ export const deleteNote = async (id: string) => {
 export const resetNotesDb = async () => {
   await deleteDB(DB_NAME);
 };
+
+export const deleteNotesByPhotoId = async (photoId: string) => {
+  const db = await initNotesDb();
+  const index = db.transaction(STORE_NAME, 'readwrite').store.index('photoId');
+  const relatedNotes = await index.getAll(photoId);
+  for (const note of relatedNotes) {
+    await db.delete(STORE_NAME, note.id);
+  }
+};

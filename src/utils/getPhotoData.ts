@@ -1,4 +1,5 @@
-import photos, { Photo } from '../data/photos';
+import photos from '../seeds/photos';
+import { Photo } from '../interfaces/photos';
 
 export const getPhotoData = (): Photo[] => {
   return photos;
