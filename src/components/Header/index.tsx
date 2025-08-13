@@ -13,11 +13,15 @@ const Header = () => {
   const pageName = useMemo(() => {
     const path = location.pathname;
 
+    if (path.startsWith('/profile')) {
+      return 'Profile';
+    }
+
     switch (path) {
       case ROUTES.default.path:
         return ROUTES.default.label;
       default:
-        return '';
+        return 'Photo';
     }
   }, [location.pathname]);
 
