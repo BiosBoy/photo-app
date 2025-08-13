@@ -10,10 +10,10 @@ const Sidebar = () => {
   const location = useLocation();
 
   const handleResetData = async () => {
-    if (window.confirm('This will erase all photo data and re-seed it. Continue?')) {
+    if (window.confirm('This will erase all app data changes. Continue?')) {
       await resetPhotoDb();
       await resetNotesDb();
-      alert('Photo data reset successfully!');
+      alert('App data reset successfully!');
       window.location.reload();
     }
   };

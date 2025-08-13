@@ -1,0 +1,14 @@
+.mainContent {
+  flex-grow: 1;
+  padding: 24px 0;
+  display: flex;
+  margin-bottom: 128px;
+  flex-direction: column;
+  height: max-content;
+  overflow: scroll;
+}
+
+.historyList {
+  max-height: 500px;
+  overflow: scroll;
+}

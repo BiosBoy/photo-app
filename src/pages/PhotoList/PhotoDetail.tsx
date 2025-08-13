@@ -28,14 +28,12 @@ const PhotoDetail = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [noteText, setNoteText] = useState('');
 
-  // Fetch photo
   useEffect(() => {
     if (id) {
       getPhotoById(id).then(setPhoto);
     }
   }, [id]);
 
-  // Fetch related notes
   useEffect(() => {
     if (id) {
       getNotesByPhotoId(id).then((res) => setNotes(res.sort((a, b) => b.timestamp - a.timestamp)));

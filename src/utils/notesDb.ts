@@ -48,5 +48,4 @@ export const deleteNote = async (id: string) => {
 
 export const resetNotesDb = async () => {
   await deleteDB(DB_NAME);
-  await initNotesDb();
 };
