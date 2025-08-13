@@ -1,0 +1,44 @@
+a {
+  &:hover,
+  &:active {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: var(--color-text);
+}
+
+.underlineTextLink {
+  &:hover,
+  &:active {
+    p {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
+  }
+}
+
+.listWrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.MuiContainer-root {
+  height: inherit;
+}

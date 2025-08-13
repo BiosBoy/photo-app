@@ -1,0 +1,13 @@
+.sidebarDrawer {
+  width: 300px;
+  flex-shrink: 0;
+
+  > div {
+    width: inherit;
+    box-sizing: border-box;
+  }
+}
+
+.listItem {
+  gap: 16px;
+}

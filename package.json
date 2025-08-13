@@ -1,0 +1,50 @@
+{
+  "name": "photo-app",
+  "version": "1.0.0",
+  "private": true,
+  "author": {
+    "name": "Sviatoslav Kuzhelev",
+    "email": "svyat770@gmail.com"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint \"**/*.{ts,js,tsx,jsx}\" --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^5.15.7",
+    "@testing-library/dom": "^10.4.1",
+    "@types/react-dom": "^19.1.7",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.7.1",
+    "sass": "^1.89.2",
+    "typescript": "5.8"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.9",
+    "@types/testing-library__jest-dom": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "@vitest/ui": "^3.2.4",
+    "eslint": "^9.32.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.2",
+    "vite": "^7.0.6",
+    "vitest": "^3.2.4"
+  }
+}
