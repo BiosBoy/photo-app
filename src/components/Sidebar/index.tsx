@@ -3,14 +3,25 @@ import { Link, useLocation } from 'react-router-dom';
 import ROUTES from '../../constants/routes';
 
 import styles from './index.module.scss';
+import { resetNotesDb } from '../../utils/notesDb';
+import { resetPhotoDb } from '../../utils/photoDb';
 
 const Sidebar = () => {
   const location = useLocation();
 
+  const handleResetData = async () => {
+    if (window.confirm('This will erase all photo data and re-seed it. Continue?')) {
+      await resetPhotoDb();
+      await resetNotesDb();
+      alert('Photo data reset successfully!');
+      window.location.reload();
+    }
+  };
+
   return (
     <Drawer variant="permanent" className={styles.sidebarDrawer}>
       <Toolbar />
-      <List>
+      <List className={styles.list}>
         {Object.values(ROUTES).map((route) => {
           const isSelected =
             location.pathname === route.path || location.pathname.startsWith(`${route.path}/`);
@@ -29,6 +40,12 @@ const Sidebar = () => {
             </ListItem>
           );
         })}
+
+        <ListItem className={styles.resetButton} disablePadding>
+          <ListItemButton onClick={handleResetData}>
+            <ListItemText primary="Reset Data" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   );

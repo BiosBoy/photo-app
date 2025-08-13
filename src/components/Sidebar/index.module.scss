@@ -8,6 +8,17 @@
   }
 }
 
+.list {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .listItem {
   gap: 16px;
+}
+
+.resetButton {
+  margin-top: auto;
 }

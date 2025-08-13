@@ -5,17 +5,18 @@ import { Card, CardContent, Typography, Box, Chip, Stack } from '@mui/material';
 import SearchBar from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
 import FilterDropdown from '../../components/FilterDropdown';
-import NothingFound from '../../components/NothingFound';
-
-import { getPhotoData } from '../../utils/getPhotoData';
-import type { Photo } from '../../data/photos';
 
 import useSearchPagination from '../../hooks/useSearchPagination';
+import { getAllPhotos } from '../../utils/photoDb';
+import { Photo } from '../../interfaces/photos';
 
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [photos, setPhotos] = useState<Photo[]>([]);
 
-  const photos: Photo[] = useMemo(() => getPhotoData(), []);
+  useEffect(() => {
+    getAllPhotos().then(setPhotos);
+  }, []);
 
   const allTags = useMemo(
     () => Array.from(new Set(photos.flatMap((p) => p.tags))).sort(),
@@ -30,8 +31,7 @@ const PhotoList = () => {
     if (!selectedTags.length) {
       return photos;
     }
-
-    return photos.filter((p) => p.tags.some((t) => selectedTags.includes(t)));
+    return photos.filter((p) => p.tags.some((tag) => selectedTags.includes(tag)));
   }, [photos, selectedTags]);
 
   const {
@@ -51,15 +51,12 @@ const PhotoList = () => {
     if (searchQuery) {
       params.search = searchQuery;
     }
-
     if (currentPage > 1) {
       params.page = String(currentPage);
     }
-
     if (selectedTags.length) {
       params.tags = selectedTags.join(',');
     }
-
     setSearchParams(params);
   }, [searchQuery, currentPage, selectedTags, setSearchParams]);
 
@@ -85,24 +82,18 @@ const PhotoList = () => {
       </Box>
 
       {!paginatedPhotos?.length ? (
-        <NothingFound />
+        <Typography>No notes added yet.</Typography>
       ) : (
         normalizedPhotos.map((photo) => (
           <Card key={photo.id} sx={{ my: 2 }}>
             <Link to={`/${photo.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <CardContent>
-                <Stack direction="row" spacing={2} alignItems="flex-start">
+                <Stack direction="row" spacing={2}>
                   <Box
                     component="img"
                     src={`collection/${photo.fileName}.${photo.fileType}`}
                     alt={photo.title}
-                    sx={{
-                      width: 120,
-                      height: 120,
-                      objectFit: 'cover',
-                      borderRadius: 1,
-                      flexShrink: 0,
-                    }}
+                    sx={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 1 }}
                   />
                   <Box>
                     <Typography variant="h6">{photo.title}</Typography>
@@ -113,8 +104,8 @@ const PhotoList = () => {
                       {new Date(photo.createDate).toLocaleDateString()}
                     </Typography>
                     <Stack direction="row" spacing={1}>
-                      {photo.tags.map((t) => (
-                        <Chip key={t} label={t} size="small" />
+                      {photo.tags.map((tag) => (
+                        <Chip key={tag} label={tag} size="small" />
                       ))}
                     </Stack>
                   </Box>

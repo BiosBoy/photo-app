@@ -1,12 +1,4 @@
-export type Photo = {
-  id: string;
-  createDate: number;
-  title: string;
-  caption: string;
-  tags: string[];
-  fileName: string;
-  fileType: string;
-};
+import { Photo } from '../interfaces/photos';
 
 const photos: Photo[] = [
   {
