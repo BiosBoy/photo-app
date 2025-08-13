@@ -10,7 +10,7 @@ interface UseSearchPaginationProps<T> {
 const useSearchPagination = <T extends Record<string, any>>({
   data,
   searchKey,
-  itemsPerPage = 4,
+  itemsPerPage = 3,
 }: UseSearchPaginationProps<T>) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQueryState] = useState(() => searchParams.get('search') || '');
