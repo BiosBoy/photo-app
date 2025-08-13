@@ -2,11 +2,14 @@ import { Link, useParams } from 'react-router-dom';
 import { Typography, Card, CardContent, Stack, Chip, Box, Button } from '@mui/material';
 
 import photos from '../../data/photos';
+import { useMemo } from 'react';
 
 const PhotoDetail = () => {
   const { id } = useParams();
 
-  const photo = photos.find((p) => p.id === id || p.id.toString() === id);
+  const photo = useMemo(() => {
+    return photos.find((p) => p.id === id || p.id.toString() === id);
+  }, [photos, id]);
 
   if (!photo) {
     return <Typography>Photo not found</Typography>;
@@ -19,12 +22,7 @@ const PhotoDetail = () => {
           {photo.title}
         </Typography>
 
-        <Button
-          component={Link}
-          to='/'
-          variant="outlined"
-          size="small"
-        >
+        <Button component={Link} to="/" variant="outlined" size="small">
           Back to Photos
         </Button>
       </Box>

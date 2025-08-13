@@ -13,25 +13,9 @@ const Header = () => {
   const pageName = useMemo(() => {
     const path = location.pathname;
 
-    if (path.startsWith('/candidates/')) {
-      return 'Candidate Resume';
-    }
-    if (path.startsWith('/jobs/') && path !== ROUTES.jobs.path) {
-      return 'Job Detail';
-    }
-    if (path.startsWith('/companies/') && path !== ROUTES.companies.path) {
-      return 'Company Detail';
-    }
-
     switch (path) {
       case ROUTES.default.path:
         return ROUTES.default.label;
-      case ROUTES.companies.path:
-        return ROUTES.companies.label;
-      case ROUTES.candidates.path:
-        return ROUTES.candidates.label;
-      case ROUTES.jobs.path:
-        return ROUTES.jobs.label;
       default:
         return '';
     }

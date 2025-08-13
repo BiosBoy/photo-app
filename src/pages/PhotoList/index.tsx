@@ -9,7 +9,6 @@ import NothingFound from '../../components/NothingFound';
 
 import photos from '../../data/photos';
 
-import ROUTES from '../../constants/routes';
 import useSearchPagination from '../../hooks/useSearchPagination';
 
 const allTags = Array.from(new Set(photos.flatMap((p) => p.tags))).sort();
@@ -21,13 +20,14 @@ const PhotoList = () => {
     searchParams.get('tags')?.split(',') ?? []
   );
 
-  // Filter by tags first
   const tagFiltered = useMemo(() => {
-    if (!selectedTags.length) return photos;
+    if (!selectedTags.length) {
+      return photos;
+    }
+
     return photos.filter((p) => p.tags.some((t) => selectedTags.includes(t)));
   }, [selectedTags]);
 
-  // Paginate + search by title (hook handles this)
   const {
     searchQuery,
     setSearchQuery,
@@ -40,14 +40,27 @@ const PhotoList = () => {
     searchKey: 'title',
   });
 
-  // Sync URL
   useEffect(() => {
     const params: Record<string, string> = {};
-    if (searchQuery) params.search = searchQuery;
-    if (currentPage > 1) params.page = String(currentPage);
-    if (selectedTags.length) params.tags = selectedTags.join(',');
+
+    if (searchQuery) {
+      params.search = searchQuery;
+    }
+
+    if (currentPage > 1) {
+      params.page = String(currentPage);
+    }
+
+    if (selectedTags.length) {
+      params.tags = selectedTags.join(',');
+    }
+
     setSearchParams(params);
   }, [searchQuery, currentPage, selectedTags, setSearchParams]);
+
+  const normalizedPhotos = useMemo(() => {
+    return paginatedPhotos.slice().sort((a, b) => b.createDate - a.createDate);
+  }, [paginatedPhotos]);
 
   return (
     <div className="listWrap">
@@ -62,39 +75,33 @@ const PhotoList = () => {
           options={allTags}
           value={selectedTags}
           onChange={setSelectedTags}
-          getCountForOption={(tag) =>
-            photos.filter((p) => p.tags.includes(tag)).length
-          }
+          getCountForOption={(tag) => photos.filter((p) => p.tags.includes(tag)).length}
         />
       </Box>
 
       {!paginatedPhotos?.length ? (
         <NothingFound />
       ) : (
-        paginatedPhotos
-          // newest first
-          .slice()
-          .sort((a, b) => b.createDate - a.createDate)
-          .map((photo) => (
-            <Card key={photo.id} sx={{ my: 2 }}>
-              <Link to={`/${photo.id}`}>
-                <CardContent>
-                  <Typography variant="h6">{photo.title}</Typography>
-                  <Typography variant="body2" sx={{ mb: 1 }}>
-                    {photo.caption}
-                  </Typography>
-                  <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
-                    {new Date(photo.createDate).toLocaleDateString()}
-                  </Typography>
-                  <Stack direction="row" spacing={1}>
-                    {photo.tags.map((t) => (
-                      <Chip key={t} label={t} size="small" />
-                    ))}
-                  </Stack>
-                </CardContent>
-              </Link>
-            </Card>
-          ))
+        normalizedPhotos.map((photo) => (
+          <Card key={photo.id} sx={{ my: 2 }}>
+            <Link to={`/${photo.id}`}>
+              <CardContent>
+                <Typography variant="h6">{photo.title}</Typography>
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                  {photo.caption}
+                </Typography>
+                <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                  {new Date(photo.createDate).toLocaleDateString()}
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                  {photo.tags.map((t) => (
+                    <Chip key={t} label={t} size="small" />
+                  ))}
+                </Stack>
+              </CardContent>
+            </Link>
+          </Card>
+        ))
       )}
 
       <Pagination
