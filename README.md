@@ -1,6 +1,6 @@
-# 🧑‍💼 Applicant Tracking System (ATS) – React + TypeScript + Material UI
+# 🧑‍💼 Photo App – React + TypeScript + Material UI
 
-A simple ATS that allows users to view candidates, companies, and job postings — built with React, TypeScript, Vite, and Material UI.
+A simple Photo app that allows users to view photos and their history — built with React, TypeScript, Vite, and Material UI.
 
 ---
 
@@ -18,19 +18,20 @@ A simple ATS that allows users to view candidates, companies, and job postings �
 ## 📂 Project Structure
 
 ```bash
-ats-react-tsx-app/
+photo-app/
 ├── public/
+├── server/
+│   └── index.js
 ├── src/
 │   ├── components/
 │   │   ├── Sidebar.tsx
 │   │   ├── Header.tsx
 │   │   ├── Footer.tsx
+│   │   ├── AddPhotoModal.tsx
 │   │   ├── FilterDropdown.tsx
 │   │   └── SearchBar.tsx
-│   ├── data/
-│   │   ├── candidates.ts
-│   │   ├── companies.ts
-│   │   └── jobs.ts
+│   ├── seeds/
+│   │   ├── photos.ts
 │   ├── constants/
 │   │   └── routes.ts
 │   ├── styles/
@@ -43,15 +44,9 @@ ats-react-tsx-app/
 │   ├── hooks/
 │   │   └── useSearchPagination.ts
 │   ├── pages/
-│   │   ├── CandidateList
+│   │   ├── PhotoList
 │   │   │   ├── index.tsx
-│   │   │   └── CandidateDetail.tsx
-│   │   ├── CompanyList
-│   │   │   ├── index.tsx
-│   │   │   └── CompanyDetail.tsx
-│   │   ├── JobList/
-│   │   │   ├── index.tsx
-│   │   │   └── JobDetail.tsx
+│   │   │   └── PhotoDetail.tsx
 │   │   └── NotFound.tsx
 │   └── index.tsx
 ├── eslint.config.js
@@ -69,7 +64,7 @@ ats-react-tsx-app/
 
 ```bash
 git clone https://github.com/BiosBoy/ats-react-tsx-app.git
-cd ats-react-tsx-app
+cd photo-app
 ```
 
 ### 2. Install dependencies
@@ -78,10 +73,11 @@ cd ats-react-tsx-app
 yarn install
 ```
 
-### 3. Start the dev server
+### 3. Start the frontend and backend servers
 
 ```bash
-yarn dev
+yarn start:frontend
+yarn start:backend
 ```
 
 Open your browser at: [http://localhost:3000](http://localhost:3000)
@@ -115,16 +111,12 @@ You can deploy the output from the `dist/` folder to:
 
 ## 🔍 Routes Overview
 
-| Path              | Page                |
-| ----------------- | ------------------- |
-| `/`               | TODO                |
-| `/candidates`     | Candidate List      |
-| `/candidates/:id` | Candidate Resume    |
-| `/companies`      | Company List        |
-| `/companies/:id`  | Company Detail Page |
-| `/jobs`           | Job Postings List   |
-| `/jobs/:id`       | Job Detail Page     |
-| `*`               | 404 Not Found       |
+| Path       | Page            |
+| ---------- | --------------- |
+| `/`        | Photo list page |
+| `/:id`     | Photo page      |
+| `/profile` | Profile Page    |
+| `*`        | 404 Not Found   |
 
 ---
 
@@ -136,11 +128,11 @@ index.ts
 │   ├── Header (Page title)
 │   ├── Navbar (Sidebar)
 │   ├── FilterDropdown.tsx
-│   └──SearchBar.tsx
+│   ├── AddPhotoModal.tsx
+│   └── SearchBar.tsx
 ├── Pages  (Routes)
-│   ├── CandidateList
-│   ├── CompanyList
-│   ├── JobList
+│   ├── PhotoList
+│   ├── Profile
 │   └── NotFound
 └── Layout (Main entrypoint)
 ```
