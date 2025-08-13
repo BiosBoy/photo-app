@@ -2,6 +2,8 @@
 
 A simple Photo app that allows users to view photos and their history — built with React, TypeScript, Vite, and Material UI.
 
+<img width="1720" height="1025" alt="Screenshot 2025-08-13 at 12 04 58 PM" src="https://github.com/user-attachments/assets/3b81c3af-2329-486e-9886-6d7605e0d8ae" />
+
 ---
 
 ## 📦 Tech Stack
