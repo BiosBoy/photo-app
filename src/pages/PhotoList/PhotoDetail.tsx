@@ -1,15 +1,15 @@
 import { Link, useParams } from 'react-router-dom';
 import { Typography, Card, CardContent, Stack, Chip, Box, Button } from '@mui/material';
+import { useMemo } from 'react';
 
 import photos from '../../data/photos';
-import { useMemo } from 'react';
 
 const PhotoDetail = () => {
   const { id } = useParams();
 
   const photo = useMemo(() => {
     return photos.find((p) => p.id === id || p.id.toString() === id);
-  }, [photos, id]);
+  }, [id]);
 
   if (!photo) {
     return <Typography>Photo not found</Typography>;
@@ -28,6 +28,18 @@ const PhotoDetail = () => {
       </Box>
 
       <Card sx={{ my: 2 }}>
+        <Box
+          component="img"
+          src={`collection/${photo.fileName}.${photo.fileType}`}
+          alt={photo.title}
+          sx={{
+            width: '100%',
+            height: 'auto',
+            maxHeight: 600,
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
         <CardContent>
           <Typography variant="body1" sx={{ mb: 1.5 }}>
             {photo.caption}

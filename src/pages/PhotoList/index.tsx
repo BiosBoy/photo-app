@@ -89,19 +89,35 @@ const PhotoList = () => {
       ) : (
         normalizedPhotos.map((photo) => (
           <Card key={photo.id} sx={{ my: 2 }}>
-            <Link to={`/${photo.id}`}>
+            <Link to={`/${photo.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <CardContent>
-                <Typography variant="h6">{photo.title}</Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  {photo.caption}
-                </Typography>
-                <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
-                  {new Date(photo.createDate).toLocaleDateString()}
-                </Typography>
-                <Stack direction="row" spacing={1}>
-                  {photo.tags.map((t) => (
-                    <Chip key={t} label={t} size="small" />
-                  ))}
+                <Stack direction="row" spacing={2} alignItems="flex-start">
+                  <Box
+                    component="img"
+                    src={`collection/${photo.fileName}.${photo.fileType}`}
+                    alt={photo.title}
+                    sx={{
+                      width: 120,
+                      height: 120,
+                      objectFit: 'cover',
+                      borderRadius: 1,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <Box>
+                    <Typography variant="h6">{photo.title}</Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      {photo.caption}
+                    </Typography>
+                    <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+                      {new Date(photo.createDate).toLocaleDateString()}
+                    </Typography>
+                    <Stack direction="row" spacing={1}>
+                      {photo.tags.map((t) => (
+                        <Chip key={t} label={t} size="small" />
+                      ))}
+                    </Stack>
+                  </Box>
                 </Stack>
               </CardContent>
             </Link>

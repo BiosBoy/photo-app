@@ -55,7 +55,7 @@ const photos: Photo[] = [
     fileType: 'jpg',
   },
   {
-    id: 'dfhf234532dbdf',
+    id: 'dfhf234532dsdfbdf',
     createDate: 1732108800000,
     title: 'Autumn Still Life',
     caption: 'Pumpkins, apples, and mums arranged beside a cabin door on a carpet of leaves.',
@@ -64,12 +64,21 @@ const photos: Photo[] = [
     fileType: 'jpg',
   },
   {
-    id: 'dfhf234532dbdf',
+    id: 'dfhf234532dbdsfdf',
     createDate: 1732108800000,
     title: 'Street Vides',
     caption: 'Jut another morning in New York beloved local coffee shop.',
     tags: ['autumn', 'street', 'coffee', 'cozy', 'vibrant'],
-    fileName: 'pexels-valeriya-18852534',
+    fileName: 'pexels-benprater-32883257',
+    fileType: 'jpg',
+  },
+  {
+    id: 'dfhf234532dbdf12',
+    createDate: 1732108800000,
+    title: 'Old Fashion',
+    caption: 'A yellow urban scooter for easy ride.',
+    tags: ['scooter', 'vehicle', 'street'],
+    fileName: 'pexels-ufuk-gerekli-441801306-33016291',
     fileType: 'jpg',
   },
 ];
