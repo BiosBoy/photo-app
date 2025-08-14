@@ -26,7 +26,8 @@ import {
 } from '../../utils/notesDb';
 import { Photo } from '../../interfaces/photos';
 
-import PhotoThumbnail from '../../components/PhotoCard';
+import PhotoCard from '../../components/PhotoCard';
+import { deleteBlob, getBlobById } from '../../utils/blobDb';
 import styles from './index.module.scss';
 
 const PhotoDetail = () => {
@@ -34,13 +35,28 @@ const PhotoDetail = () => {
   const navigate = useNavigate();
 
   const [photo, setPhoto] = useState<Photo | undefined>(undefined);
+  const [photoSrc, setPhotoSrc] = useState<string | undefined>(undefined);
   const [notes, setNotes] = useState<Note[]>([]);
   const [noteText, setNoteText] = useState('');
 
   useEffect(() => {
-    if (id) {
-      getPhotoById(id).then(setPhoto);
-    }
+    const run = async () => {
+      if (id) {
+        const photo = await getPhotoById(id);
+
+        if (photo?.id) {
+          const photoBlob = await getBlobById(photo.id);
+
+          if (photoBlob) {
+            setPhotoSrc(URL.createObjectURL(photoBlob));
+          }
+        }
+
+        setPhoto(photo);
+      }
+    };
+
+    run();
   }, [id]);
 
   useEffect(() => {
@@ -67,11 +83,10 @@ const PhotoDetail = () => {
       return;
     }
 
-    // Delete related notes first
     await deleteNotesByPhotoId(id);
-    // Delete photo from DB
     await deletePhoto(id);
-    // Navigate back to photo list
+    await deleteBlob(id);
+
     navigate('/');
   };
 
@@ -96,7 +111,7 @@ const PhotoDetail = () => {
       </Box>
 
       <Card sx={{ my: 2 }}>
-        <PhotoThumbnail photo={photo} />
+        <PhotoCard photo={photo} src={photoSrc} />
         <CardContent>
           <Typography variant="body1" sx={{ mb: 1.5 }}>
             {photo.caption}

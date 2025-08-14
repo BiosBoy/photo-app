@@ -1,8 +1,8 @@
 import { deleteDB, openDB } from 'idb';
-import seedPhotos from '../seeds/photos';
+import dump from '../seeds/photos';
 import { Photo } from '../interfaces/photos';
 
-const DB_NAME = 'photoAppDB';
+const DB_NAME = 'photoMetaDB';
 const STORE_NAME = 'photos';
 const DB_VERSION = 1;
 
@@ -10,20 +10,11 @@ export const initPhotoDb = async () => {
   const db = await openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        store.createIndex('createDate', 'createDate');
       }
     },
   });
-
-  const count = await db.count(STORE_NAME);
-
-  if (count === 0) {
-    const tx = db.transaction(STORE_NAME, 'readwrite');
-    for (const photo of seedPhotos) {
-      await tx.store.put(photo);
-    }
-    await tx.done;
-  }
 
   return db;
 };
@@ -54,5 +45,20 @@ export const deletePhoto = async (id: string) => {
 
 export const resetPhotoDb = async () => {
   await deleteDB(DB_NAME);
-  await initPhotoDb();
+  await seedPhotos();
+};
+
+export const seedPhotos = async () => {
+  const db = await initPhotoDb();
+  const count = await db.count(STORE_NAME);
+
+  if (count === 0) {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    for (const photo of dump) {
+      await tx.store.put(photo);
+    }
+    await tx.done;
+  }
+
+  return db;
 };

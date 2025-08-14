@@ -13,7 +13,10 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { addPhoto } from '../../utils/photoDb';
+import { addBlob } from '../../utils/blobDb';
 import type { Photo } from '../../interfaces/photos';
+
+import styles from './index.module.scss';
 
 type AddPhotoModalProps = {
   open: boolean;
@@ -65,29 +68,37 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
     setLoading(true);
 
     try {
+      const fileName = file.name.replace(/(\.png)|(\.jpg)|(\.jpeg)$/i, '');
+      const fileType = file.type.split('/')[1];
+      const id = `${uuidv4()}${Date.now()}`;
+
+      const newPhoto: Photo = {
+        id,
+        createDate: Date.now(),
+        title: title.trim(),
+        caption: caption.trim(),
+        tags,
+        fileName,
+        fileType,
+      };
+
+      await addPhoto(newPhoto);
+      await addBlob(id, file);
+
       const formData = new FormData();
       formData.append('photo', file);
+      formData.append('id', id);
 
       const uploadRes = await fetch('/upload', {
         method: 'POST',
         body: formData,
       });
 
-      if (!uploadRes.ok) throw new Error('Upload failed');
+      if (!uploadRes.ok) {
+        console.error('Something went wrong while saving the photo on server');
+      }
 
-      const { savedFileName, fileType } = await uploadRes.json();
-
-      const newPhoto: Photo = {
-        id: uuidv4(),
-        createDate: Date.now(),
-        title: title.trim(),
-        caption: caption.trim(),
-        tags,
-        fileName: savedFileName.replace(/\.[^/.]+$/, ''),
-        fileType,
-      };
-
-      await addPhoto(newPhoto);
+      onPhotoAdded(newPhoto);
 
       setFile(null);
       setPreview(null);
@@ -96,7 +107,6 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
       setTags([]);
       setTagInput('');
 
-      onPhotoAdded(newPhoto);
       onClose();
     } catch (err) {
       console.error(err);
@@ -117,18 +127,7 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
           </Button>
 
           {preview && (
-            <Box
-              component="img"
-              src={preview}
-              alt="Preview"
-              sx={{
-                width: '100%',
-                height: 'auto',
-                maxHeight: 300,
-                objectFit: 'cover',
-                borderRadius: 1,
-              }}
-            />
+            <Box component="img" src={preview} alt="Preview" className={styles.previewImage} />
           )}
 
           <TextField

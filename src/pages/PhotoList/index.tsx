@@ -1,26 +1,47 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, Typography, Box, Chip, Stack, Button } from '@mui/material';
-
 import { Link, useSearchParams } from 'react-router-dom';
+
 import SearchBar from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
 import FilterDropdown from '../../components/FilterDropdown';
 import AddPhotoModal from '../../components/AddPhotoModal';
-import PhotoThumbnail from '../../components/PhotoCard';
+import PhotoCard from '../../components/PhotoCard';
 
 import useSearchPagination from '../../hooks/useSearchPagination';
 import { getAllPhotos } from '../../utils/photoDb';
+import { getBlobById } from '../../utils/blobDb';
+
 import { Photo } from '../../interfaces/photos';
 
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [photos, setPhotos] = useState<Photo[]>([]);
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [addOpen, setAddOpen] = useState(false);
 
+  const loadPhotos = async () => {
+    const allPhotos = await getAllPhotos();
+    const sortedPhotos = [...allPhotos].sort((a, b) => b.createDate - a.createDate);
+    setPhotos(sortedPhotos);
+
+    // Load blobs and convert to Object URLs
+    const urls: Record<string, string> = {};
+    for (const photo of sortedPhotos) {
+      try {
+        const blob = await getBlobById(photo.id);
+        if (blob) {
+          urls[photo.id] = URL.createObjectURL(blob);
+        }
+      } catch (err) {
+        console.error(`Failed to load blob for ${photo.id}`, err);
+      }
+    }
+    setPhotoUrls(urls);
+  };
+
   useEffect(() => {
-    getAllPhotos().then((photos) =>
-      setPhotos([...photos].sort((a, b) => b.createDate - a.createDate))
-    );
+    loadPhotos();
   }, []);
 
   const allTags = useMemo(
@@ -38,11 +59,6 @@ const PhotoList = () => {
     }
     return photos.filter((p) => p.tags.some((tag) => selectedTags.includes(tag)));
   }, [photos, selectedTags]);
-
-  const loadPhotos = async () => {
-    const allPhotos = await getAllPhotos();
-    setPhotos([...allPhotos].sort((a, b) => b.createDate - a.createDate));
-  };
 
   const {
     searchQuery,
@@ -98,7 +114,7 @@ const PhotoList = () => {
             <Link to={`/${photo.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <CardContent>
                 <Stack direction="row" spacing={2}>
-                  <PhotoThumbnail photo={photo} isThumb />
+                  <PhotoCard photo={photo} isThumb src={photoUrls[photo.id]} />
                   <Box>
                     <Typography variant="h6">{photo.title}</Typography>
                     <Typography variant="body2" sx={{ mb: 1 }}>
@@ -125,13 +141,7 @@ const PhotoList = () => {
         currentPage={currentPage}
         onChange={(_, page) => setCurrentPage(page)}
       />
-      <AddPhotoModal
-        open={addOpen}
-        onClose={() => setAddOpen(false)}
-        onPhotoAdded={() => {
-          loadPhotos();
-        }}
-      />
+      <AddPhotoModal open={addOpen} onClose={() => setAddOpen(false)} onPhotoAdded={loadPhotos} />
     </div>
   );
 };

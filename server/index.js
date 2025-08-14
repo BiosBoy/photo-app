@@ -20,12 +20,7 @@ if (!fs.existsSync(collectionDir)) {
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, collectionDir),
-  filename: (_, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const base = path.basename(file.originalname, ext);
-    const timestamp = Date.now();
-    cb(null, `${base}-${timestamp}${ext}`);
-  },
+  filename: (_, file, cb) => cb(null, file.originalname),
 });
 
 const upload = multer({ storage });
@@ -43,16 +38,12 @@ server
   })
   .use('/collection', express.static(path.join(process.cwd(), './public/collection')));
 
-server.post('/upload', upload.single('photo'), (req, res) => {
+server.post('/upload', upload.single('photo'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
-  const ext = path.extname(req.file.filename).replace('.', '');
-  res.json({
-    savedFileName: req.file.filename,
-    fileType: ext,
-  });
+  res.json({ ok: true });
 });
 
 if (fs.existsSync(distDir)) {
