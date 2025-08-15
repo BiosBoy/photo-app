@@ -28,11 +28,14 @@ import { Photo } from '../../interfaces/photos';
 
 import PhotoCard from '../../components/PhotoCard';
 import { deleteBlob, getBlobById } from '../../db/blobDb';
+import PhotoMagnifier from '../../components/PhotoMagnifier';
 import styles from './index.module.scss';
 
 const PhotoDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [isOpen, setIsModalOpen] = useState(false);
 
   const [photo, setPhoto] = useState<Photo | undefined>(undefined);
   const [photoSrc, setPhotoSrc] = useState<string | undefined>(undefined);
@@ -116,7 +119,7 @@ const PhotoDetail = () => {
       </Box>
 
       <Card sx={{ my: 2 }}>
-        <PhotoCard photo={photo} src={photoSrc} />
+        <PhotoCard photo={photo} src={photoSrc} onClick={() => setIsModalOpen(true)} />
         <CardContent>
           <Typography variant="body1" sx={{ mb: 1.5 }}>
             {photo?.caption}
@@ -172,6 +175,12 @@ const PhotoDetail = () => {
           )}
         </CardContent>
       </Card>
+      <PhotoMagnifier
+        onClose={() => setIsModalOpen(false)}
+        isOpen={isOpen}
+        src={photoSrc}
+        alt={photo?.title}
+      />
     </div>
   );
 };

@@ -4,18 +4,23 @@
   overflow: hidden;
   background-color: var(--color-fallback);
   min-height: 500px;
+  height: auto;
+  max-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &.thumbnail {
     width: 120px;
     height: 120px;
     min-height: unset;
   }
-}
 
-.photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  img {
+    width: auto;
+    max-height: inherit;
+    object-fit: cover;
+  }
 }
 
 .skeleton {
