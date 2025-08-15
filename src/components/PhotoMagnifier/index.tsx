@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styles from './index.module.scss';
 
 const PhotoMagnifier = ({
@@ -11,6 +12,21 @@ const PhotoMagnifier = ({
   alt?: string;
   onClose: () => void;
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) {
     return null;
   }
@@ -18,11 +34,11 @@ const PhotoMagnifier = ({
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <button className={styles.closeButton} onClick={onClose} aria-label="Close">
-          &times;
-        </button>
         <img src={src} alt={alt} className={styles.modalImage} />
       </div>
+      <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+        &times;
+      </button>
     </div>
   );
 };
