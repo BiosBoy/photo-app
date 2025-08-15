@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 
-import { addPhoto } from '../../utils/photoDb';
-import { addBlob } from '../../utils/blobDb';
+import { addPhoto } from '../../db/photoDb';
+import { addBlob } from '../../db/blobDb';
 import type { Photo } from '../../interfaces/photos';
 
 import styles from './index.module.scss';
@@ -85,17 +85,19 @@ const AddPhotoModal = ({ open, onClose, onPhotoAdded }: AddPhotoModalProps) => {
       await addPhoto(newPhoto);
       await addBlob(id, file);
 
-      const formData = new FormData();
-      formData.append('photo', file);
-      formData.append('id', id);
+      if (navigator.onLine) {
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('photo', file);
 
-      const uploadRes = await fetch('/upload', {
-        method: 'POST',
-        body: formData,
-      });
+        const uploadRes = await fetch('/upload', {
+          method: 'POST',
+          body: formData,
+        });
 
-      if (!uploadRes.ok) {
-        console.error('Something went wrong while saving the photo on server');
+        if (!uploadRes.ok) {
+          console.error('Something went wrong while saving the photo on server');
+        }
       }
 
       onPhotoAdded(newPhoto);

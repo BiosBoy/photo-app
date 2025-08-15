@@ -6,3 +6,30 @@
   max-height: 250px;
   overflow: scroll;
 }
+
+.placeholder {
+  min-height: 160px;
+  position: relative;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-fallback) 25%,
+    #f5f5f5 50%,
+    var(--color-fallback) 75%
+  );
+  background-size: 200% 100%;
+  animation: placeholderShimmer 1.2s infinite;
+}
+
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

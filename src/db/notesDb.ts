@@ -8,7 +8,7 @@ export type Note = {
   text: string;
 };
 
-const DB_NAME = 'notesAppDB';
+const DB_NAME = 'notesDB';
 const STORE_NAME = 'notes';
 const DB_VERSION = 1;
 

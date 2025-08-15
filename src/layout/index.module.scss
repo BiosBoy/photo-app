@@ -7,8 +7,13 @@
   flex-grow: 1;
   padding: 24px 0;
   display: flex;
-  margin-bottom: 128px;
+  margin-bottom: 32px;
   flex-direction: column;
-  height: max-content;
+  height: inherit;
+  overflow: scroll;
+}
+
+.container {
+  height: -webkit-fill-available;
   overflow: scroll;
 }

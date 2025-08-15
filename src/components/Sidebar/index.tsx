@@ -2,9 +2,9 @@ import { Drawer, List, ListItem, ListItemText, ListItemButton, Toolbar } from '@
 import { Link, useLocation } from 'react-router-dom';
 import ROUTES from '../../constants/routes';
 
-import { resetNotesDb } from '../../utils/notesDb';
-import { getAllPhotos, resetPhotoDb } from '../../utils/photoDb';
-import { resetBlobDb } from '../../utils/blobDb';
+import { resetNotesDb } from '../../db/notesDb';
+import { getAllPhotos, resetPhotoDb } from '../../db/photoDb';
+import { resetBlobDb } from '../../db/blobDb';
 import styles from './index.module.scss';
 
 const Sidebar = () => {

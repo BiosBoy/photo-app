@@ -14,7 +14,7 @@ import {
   Divider,
 } from '@mui/material';
 
-import { getAllPhotos } from '../../utils/photoDb';
+import { getAllPhotos } from '../../db/photoDb';
 import { Photo } from '../../interfaces/photos';
 import styles from './index.module.scss';
 

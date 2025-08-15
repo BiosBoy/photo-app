@@ -61,7 +61,7 @@ const useSearchPagination = <T extends Record<string, any>>({
     setSearchQuery: handleSearch,
     currentPage,
     setCurrentPage,
-    totalPages,
+    totalPages: currentPage > totalPages ? currentPage : totalPages,
     paginatedData,
     filteredData,
   };

@@ -6,4 +6,5 @@ export type Photo = {
   tags: string[];
   fileName: string;
   fileType: string;
+  synced?: boolean;
 };

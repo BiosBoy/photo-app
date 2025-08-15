@@ -20,7 +20,12 @@ if (!fs.existsSync(collectionDir)) {
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, collectionDir),
-  filename: (_, file, cb) => cb(null, file.originalname),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const id = req.body.id;
+
+    cb(null, `${id}${ext}`);
+  },
 });
 
 const upload = multer({ storage });

@@ -9,18 +9,22 @@ import AddPhotoModal from '../../components/AddPhotoModal';
 import PhotoCard from '../../components/PhotoCard';
 
 import useSearchPagination from '../../hooks/useSearchPagination';
-import { getAllPhotos } from '../../utils/photoDb';
-import { getBlobById } from '../../utils/blobDb';
+import { getAllPhotos } from '../../db/photoDb';
+import { getBlobById } from '../../db/blobDb';
 
 import { Photo } from '../../interfaces/photos';
 
+import styles from './index.module.scss';
+
 const PhotoList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(false);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [addOpen, setAddOpen] = useState(false);
 
   const loadPhotos = async () => {
+    setLoading(true);
     const allPhotos = await getAllPhotos();
     const sortedPhotos = [...allPhotos].sort((a, b) => b.createDate - a.createDate);
     setPhotos(sortedPhotos);
@@ -38,6 +42,7 @@ const PhotoList = () => {
       }
     }
     setPhotoUrls(urls);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -106,8 +111,18 @@ const PhotoList = () => {
           getCountForOption={(tag) => photos.filter((p) => p.tags.includes(tag)).length}
         />
       </Box>
-      {!paginatedPhotos?.length ? (
-        <Typography>No notes added yet.</Typography>
+      {loading ? (
+        <>
+          <Card sx={{ my: 2 }} className={styles.placeholder}>
+            <div className={styles.skeleton} />
+          </Card>
+          <Card sx={{ my: 2 }} className={styles.placeholder}>
+            <div className={styles.skeleton} />
+          </Card>
+          <Card sx={{ my: 2 }} className={styles.placeholder}>
+            <div className={styles.skeleton} />
+          </Card>
+        </>
       ) : (
         paginatedPhotos.map((photo) => (
           <Card key={photo.id} sx={{ my: 2 }}>

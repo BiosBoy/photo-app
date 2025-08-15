@@ -16,18 +16,18 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
 
-import { getPhotoById, deletePhoto } from '../../utils/photoDb';
+import { getPhotoById, deletePhoto } from '../../db/photoDb';
 import {
   addNote,
   getNotesByPhotoId,
   deleteNote,
   deleteNotesByPhotoId,
   Note,
-} from '../../utils/notesDb';
+} from '../../db/notesDb';
 import { Photo } from '../../interfaces/photos';
 
 import PhotoCard from '../../components/PhotoCard';
-import { deleteBlob, getBlobById } from '../../utils/blobDb';
+import { deleteBlob, getBlobById } from '../../db/blobDb';
 import styles from './index.module.scss';
 
 const PhotoDetail = () => {
@@ -41,6 +41,8 @@ const PhotoDetail = () => {
 
   useEffect(() => {
     const run = async () => {
+      let src = '';
+
       if (id) {
         const photo = await getPhotoById(id);
 
@@ -48,12 +50,19 @@ const PhotoDetail = () => {
           const photoBlob = await getBlobById(photo.id);
 
           if (photoBlob) {
-            setPhotoSrc(URL.createObjectURL(photoBlob));
+            src = URL.createObjectURL(photoBlob);
           }
         }
 
         setPhoto(photo);
+        setPhotoSrc(src);
       }
+
+      return () => {
+        if (src) {
+          URL.revokeObjectURL(src);
+        }
+      };
     };
 
     run();
@@ -90,15 +99,11 @@ const PhotoDetail = () => {
     navigate('/');
   };
 
-  if (!photo) {
-    return <Typography>Photo not found</Typography>;
-  }
-
   return (
     <div className={styles.wrap}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h4" gutterBottom>
-          {photo.title}
+          {photo?.title}
         </Typography>
         <Stack direction="row" spacing={1}>
           <Button component={Link} to="/" variant="outlined" size="small">
@@ -114,18 +119,19 @@ const PhotoDetail = () => {
         <PhotoCard photo={photo} src={photoSrc} />
         <CardContent>
           <Typography variant="body1" sx={{ mb: 1.5 }}>
-            {photo.caption}
+            {photo?.caption}
           </Typography>
-          <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
-            Taken on {new Date(photo.createDate).toLocaleDateString()}
-          </Typography>
+          {photo?.createDate && (
+            <Typography variant="caption" sx={{ display: 'block', mb: 1 }}>
+              Taken on {new Date(photo?.createDate).toLocaleDateString()}
+            </Typography>
+          )}
           <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-            {photo.tags.map((t) => (
+            {photo?.tags.map((t) => (
               <Chip key={t} label={t} size="small" />
             ))}
           </Stack>
 
-          {/* Notes Section */}
           <Typography variant="h6" gutterBottom>
             Notes
           </Typography>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Photo } from '../../interfaces/photos';
 import styles from './index.module.scss';
 
-const PhotoCard = ({ photo, isThumb, src }: { isThumb?: boolean; photo: Photo; src?: string }) => {
+const PhotoCard = ({ photo, isThumb, src }: { isThumb?: boolean; photo?: Photo; src?: string }) => {
   const [loading, setLoading] = useState(true);
 
   return (
@@ -11,7 +11,7 @@ const PhotoCard = ({ photo, isThumb, src }: { isThumb?: boolean; photo: Photo; s
 
       <img
         src={src}
-        alt={photo.title}
+        alt={photo?.title}
         style={{ display: loading ? 'none' : 'block' }}
         onLoad={() => setLoading(false)}
         onError={(e) => {

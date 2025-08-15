@@ -51,7 +51,7 @@ export const seedBlobs = async (photos: Photo[]) => {
   if (count === 0) {
     console.log('Blob store empty. Seeding from public/collection...');
     for (const p of photos) {
-      const url = `/collection/${p.fileName}.${p.fileType}`;
+      const url = `/collection/${p.id}.${p.fileType}`;
       try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Failed to fetch ${url}`);

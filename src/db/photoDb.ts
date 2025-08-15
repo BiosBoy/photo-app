@@ -2,7 +2,7 @@ import { deleteDB, openDB } from 'idb';
 import dump from '../seeds/photos';
 import { Photo } from '../interfaces/photos';
 
-const DB_NAME = 'photoMetaDB';
+const DB_NAME = 'photoDB';
 const STORE_NAME = 'photos';
 const DB_VERSION = 1;
 
@@ -10,8 +10,7 @@ export const initPhotoDb = async () => {
   const db = await openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-        store.createIndex('createDate', 'createDate');
+        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
       }
     },
   });
@@ -41,6 +40,11 @@ export const deletePhoto = async (id: string) => {
   const db = await initPhotoDb();
 
   await db.delete(STORE_NAME, id);
+};
+
+export const updatePhoto = async (photo: Photo) => {
+  const db = await initPhotoDb();
+  await db.put(STORE_NAME, photo);
 };
 
 export const resetPhotoDb = async () => {
